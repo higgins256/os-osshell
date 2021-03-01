@@ -5,6 +5,8 @@
 #include <sstream>
 #include <vector>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <list>
 
 void allocateArrayOfCharArrays(char ***array_ptr, size_t array_length, size_t item_size);
 void freeArrayOfCharArrays(char **array, size_t array_length);
@@ -12,6 +14,7 @@ void splitString(std::string text, char d, char **result);
 
 int main (int argc, char **argv)
 {
+
     // Get list of paths to binary executables
     // `os_path_list` supports up to 16 directories in PATH, 
     //     each with a directory name length of up to 64 characters
@@ -20,18 +23,48 @@ int main (int argc, char **argv)
     char* os_path = getenv("PATH");
     splitString(os_path, ':', os_path_list);
 
+    //welcome message
+    printf("Welcome to the OSShell! Please enter you commands ('exit' to quite).\n");
 
     // Example code for how to loop over NULL terminated list of strings
+
+    std::string choice;
     int i = 0;
+    int trueCount = 0;
+
     while (os_path_list[i] != NULL)
     {
-        printf("PATH[%2d]: %s\n", i, os_path_list[i]);
+        if(os_path_list[i] == choice )
+        {
+            trueCount++;
+        }
         i++;
     }
 
+    //user input to determine wich path they are taking
+    std::vector<std::string> history;
+    int counter = 0;
+    int size = 128;
 
-    // Welcome message
-    printf("Welcome to OSShell! Please enter your commands ('exit' to quit).\n");
+    while(counter <= size)
+    {
+      std::cin >> choice;
+      history.push_back(choice);
+      if(choice == "history")
+      {
+          for(int i = 0; i < history.size(); i++)
+             std::cout << history.at(i) << "\n";
+      }
+      else if(choice == "exit")
+      {
+         exit(0);
+      }
+      else
+      {
+        std::string fullPath = findExecutable(os_path_list, choice);
+      }
+      counter++;
+    }
 
     // Allocate space for input command lists
     // `command_list` supports up to 32 command line parameters, 
@@ -53,6 +86,14 @@ int main (int argc, char **argv)
     freeArrayOfCharArrays(command_list, 32);
 
     return 0;
+}
+
+void print(std::list<std::string> const &list)
+{
+   for(auto const& i: list){
+         std::cout << i << "\n";
+   }
+
 }
 
 /*
