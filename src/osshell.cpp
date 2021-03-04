@@ -11,6 +11,7 @@
 void allocateArrayOfCharArrays(char ***array_ptr, size_t array_length, size_t item_size);
 void freeArrayOfCharArrays(char **array, size_t array_length);
 void splitString(std::string text, char d, char **result);
+std::string findExecutables(char **path_list, std::string command);
 
 int main (int argc, char **argv)
 {
@@ -61,7 +62,8 @@ int main (int argc, char **argv)
       }
       else
       {
-        std::string fullPath = findExecutable(os_path_list, choice);
+        printf("your command entered was in a path");
+        //std::string fullPath = findExecutables(os_path_list, choice);
       }
       counter++;
     }
@@ -95,6 +97,24 @@ void print(std::list<std::string> const &list)
    }
 
 }
+
+std::string findExecutables(char **path_list, std::string command)
+{
+    int i = 0;
+    std::string returnString = "";
+    while(path_list[i] != NULL)
+    {
+        if(path_list[i] == command)
+        {
+             returnString = returnString + path_list[i];
+        }
+
+    }
+    return returnString;
+}
+
+
+
 
 /*
    array_ptr: pointer to list of strings to be allocated
