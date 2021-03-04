@@ -56,6 +56,10 @@ int main (int argc, char **argv)
           for(int i = 0; i < history.size(); i++)
              std::cout << history.at(i) << "\n";
       }
+      else if(choice == "clear")
+      {
+          history.clear();
+      }
       else if(choice == "exit")
       {
          exit(0);
