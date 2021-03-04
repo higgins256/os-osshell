@@ -40,7 +40,7 @@ int main (int argc, char **argv)
     std::vector<std::string> history;
     int counter = 0;
     int size = 128;
-
+    printf("Welcome to OSShell! Please enter your commands('exit to quit)\n");
     while(counter <= size)
     {
       std::cin >> choice;
@@ -61,7 +61,15 @@ int main (int argc, char **argv)
       else
       {
         std::string fullPath = findExecutables(os_path_list, choice);
-        std::cout << "This is the file PAth: " << fullPath;
+        if(fullPath == "")
+        {
+           std::cout << "<" + choice + ">: Error command not found\n";
+        }
+        else
+        {
+           std::cout << "This is the file Path: " << fullPath << "\n";
+        }
+        std::cout << "Please enter in another command\n";
 //fork and execv() the file if it exists
 //run an error message if it does not exist
       }
@@ -137,8 +145,7 @@ std::string findExecutables(std::vector<std::string> path_list, std::string comm
         std::string fullPath = "";
         fullPath = path_list[i] + "/" + command;
         FILE * pfile;
-        
-        if(pfile = fopen(fullPath, "r"))
+        if(pfile = fopen(fullPath.c_str(), "r"))
         {
              fclose(pfile);
              return fullPath;
