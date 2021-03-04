@@ -106,10 +106,15 @@ std::string findExecutables(char **path_list, std::string command)
     {
         if(path_list[i] == command)
         {
+             fork();
              returnString = returnString + path_list[i];
+            
+	         if(fork() == 0)
+             {
+                 //execv(path_list, command);
+             }
              // what do we do with fork and execute fork();
              // how do I use the getenv()
-             //execv(path_list, command);
         }
         if(path_list[i] != command)
         {
