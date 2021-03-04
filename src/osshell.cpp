@@ -36,6 +36,7 @@ int main (int argc, char **argv)
      ************************************************************************************/
 
     //user input to determine wich path they are taking
+    std::string choice;
     std::vector<std::string> history;
     int counter = 0;
     int size = 128;
@@ -60,7 +61,9 @@ int main (int argc, char **argv)
       else
       {
         std::string fullPath = findExecutables(os_path_list, choice);
-        std::cout << fullPath;
+        std::cout << "This is the file PAth: " << fullPath;
+//fork and execv() the file if it exists
+//run an error message if it does not exist
       }
       counter++;
     }
@@ -129,23 +132,16 @@ std::string findExecutables(std::vector<std::string> path_list, std::string comm
 {
     int i = 0;
     std::string returnString = "";
-    while(path_list[i] != NULL)
+    for(i = 0; i < path_list.size(); i++)
     {
-        if(path_list[i] == command)
+        std::string fullPath = "";
+        fullPath = path_list[i] + "/" + command;
+        FILE * pfile;
+        
+        if(pfile = fopen(fullPath, "r"))
         {
-             fork();
-             returnString = returnString + path_list[i];
-            
-	         if(fork() == 0)
-             {
-                 //execv(path_list, command);
-             }
-             // what do we do with fork and execute fork();
-             // how do I use the getenv()
-        }
-        if(path_list[i] != command)
-        {
-             returnString = "<" + command +">: Error command not found";
+             fclose(pfile);
+             return fullPath;
         }
 
     }
