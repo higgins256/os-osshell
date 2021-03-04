@@ -5,6 +5,8 @@
 #include <sstream>
 #include <vector>
 #include <unistd.h>
+#include <sys/stat.h>
+#include <list>
 
 void splitString(std::string text, char d, std::vector<std::string>& result);
 void vectorOfStringsToArrayOfCharArrays(std::vector<std::string>& list, char ***result);
@@ -12,6 +14,7 @@ void freeArrayOfCharArrays(char **array, size_t array_length);
 
 int main (int argc, char **argv)
 {
+
     // Get list of paths to binary executables
     std::vector<std::string> os_path_list;
     char* os_path = getenv("PATH");
@@ -31,9 +34,30 @@ int main (int argc, char **argv)
      *   End example code                                                               *
      ************************************************************************************/
 
+    //user input to determine wich path they are taking
+    std::vector<std::string> history;
+    int counter = 0;
+    int size = 128;
 
-    // Welcome message
-    printf("Welcome to OSShell! Please enter your commands ('exit' to quit).\n");
+    while(counter <= size)
+    {
+      std::cin >> choice;
+      history.push_back(choice);
+      if(choice == "history")
+      {
+          for(int i = 0; i < history.size(); i++)
+             std::cout << history.at(i) << "\n";
+      }
+      else if(choice == "exit")
+      {
+         exit(0);
+      }
+      else
+      {
+        std::string fullPath = findExecutable(os_path_list, choice);
+      }
+      counter++;
+    }
 
     std::vector<std::string> command_list; // to store command user types in, split into its variour parameters
     char **command_list_exec; // command_list converted to an array of character arrays
@@ -85,6 +109,14 @@ int main (int argc, char **argv)
 
 
     return 0;
+}
+
+void print(std::list<std::string> const &list)
+{
+   for(auto const& i: list){
+         std::cout << i << "\n";
+   }
+
 }
 
 /*

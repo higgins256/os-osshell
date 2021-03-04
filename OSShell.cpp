@@ -11,7 +11,7 @@
 void allocateArrayOfCharArrays(char ***array_ptr, size_t array_length, size_t item_size);
 void freeArrayOfCharArrays(char **array, size_t array_length);
 void splitString(std::string text, char d, char **result);
-//string findExecutables(char **array_ptr, std::string text);
+std::string findExecutables(char **path_list, std::string command);
 
 int main (int argc, char **argv)
 {
@@ -56,6 +56,10 @@ int main (int argc, char **argv)
           for(int i = 0; i < history.size(); i++)
              std::cout << history.at(i) << "\n";
       }
+      else if(choice == "clear")
+      {
+        history.clear();
+      }
       else if(choice == "exit")
       {
          exit(0);
@@ -63,6 +67,7 @@ int main (int argc, char **argv)
       else
       {
         //std::string fullPath = findExecutables(os_path_list, choice);
+        //std::cout << fullPath;
       }
       counter++;
     }
@@ -96,22 +101,32 @@ void print(std::list<std::string> const &list)
    }
 
 }
-/*
-string findExecutables(char **path_list, std::string choice)
+
+std::string findExecutables(char **path_list, std::string command)
 {
     int i = 0;
     std::string returnString = "";
     while(path_list[i] != NULL)
     {
-        if(path_list[i] == choice)
+        if(path_list[i] == command)
         {
-             returnString = i + choice;
+             fork();
+             returnString = returnString + path_list[i];
+	     if(fork() == 0)
+             {
+                 //execv(path_list, command);
+             }
+             // what do we do with fork and execute fork();
+        }
+        if(path_list[i] != command)
+        {
+             returnString = "<" + command +">: Error command not found";
         }
 
     }
     return returnString;
 }
-*/
+
 
 
 
