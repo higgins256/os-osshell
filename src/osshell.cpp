@@ -62,8 +62,8 @@ int main (int argc, char **argv)
       }
       else
       {
-        printf("your command entered was in a path");
-        //std::string fullPath = findExecutables(os_path_list, choice);
+        std::string fullPath = findExecutables(os_path_list, choice);
+        std::cout << fullPath;
       }
       counter++;
     }
