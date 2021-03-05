@@ -27,7 +27,7 @@ int main (int argc, char **argv)
     std::vector<std::string> history;
     int counter = 0;
     int size = 128;
-    printf("Welcome to OSShell! Please enter your commands('exit to quit)\n");
+    printf("Welcome to OSShell! Please enter your commands('exit to quit)\nosshell> ");
     while(counter <= size)
     {
       std::cin >> choice;
@@ -54,20 +54,21 @@ int main (int argc, char **argv)
         }
         else
         {
-           fork();
+           pid_t i = fork();
            const char *charPath = fullPath.c_str();
-           const char **argv = new const char* [os_path_list.size()+1];
+           const char **argv = new const char* [os_path_list.size()+2];
            argv[0] = charPath;
            for(int j = 0; j < os_path_list.size()+1; j++)
            {
               argv[j+1] = os_path_list[j].c_str();
            }
-           execv(charPath, (char **)argv);
-
-           std::cout << "Please enter in another command\n";
+           if(i == 0)
+           {
+             execv(charPath, (char **)argv);
+           }
         }
-        std::cout << "Please enter in another command\n";
       }
+      std::cout << "Please enter in another command\nosshell> ";
       counter++;
     }
 
