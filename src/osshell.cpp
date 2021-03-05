@@ -22,19 +22,6 @@ int main (int argc, char **argv)
     splitString(os_path, ':', os_path_list);
 
     
-    /************************************************************************************
-     *   Example code - remove in actual program                                        *
-     ************************************************************************************/
-    // Shows how to loop over the directories in the PATH environment variable
-    int i;
-    for (i = 0; i < os_path_list.size(); i++)
-    {
-        printf("PATH[%2d]: %s\n", i, os_path_list[i].c_str());
-    }
-    /************************************************************************************
-     *   End example code                                                               *
-     ************************************************************************************/
-
     //user input to determine wich path they are taking
     std::string choice;
     std::vector<std::string> history;
@@ -67,11 +54,19 @@ int main (int argc, char **argv)
         }
         else
         {
-           std::cout << "This is the file Path: " << fullPath << "\n";
+           fork();
+           const char *charPath = fullPath.c_str();
+           const char **argv = new const char* [os_path_list.size()+1];
+           argv[0] = charPath;
+           for(int j = 0; j < os_path_list.size()+1; j++)
+           {
+              argv[j+1] = os_path_list[j].c_str();
+           }
+           execv(charPath, (char **)argv);
+
+           std::cout << "Please enter in another command\n";
         }
         std::cout << "Please enter in another command\n";
-//fork and execv() the file if it exists
-//run an error message if it does not exist
       }
       counter++;
     }
@@ -96,7 +91,7 @@ int main (int argc, char **argv)
     splitString(example_command, ' ', command_list);
     vectorOfStringsToArrayOfCharArrays(command_list, &command_list_exec);
     // use `command_list_exec` in the execv() function rather than looping and printing
-    i = 0;
+    int i = 0;
     while (command_list_exec[i] != NULL)
     {
         printf("CMD[%2d]: %s\n", i, command_list_exec[i]);
